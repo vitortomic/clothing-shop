@@ -4,7 +4,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 const CartContext = createContext();
 
 // Initial cart state from localStorage
-const initialState = JSON.parse(localStorage.getItem('cart')) || [];
+const initialState = JSON.parse(sessionStorage.getItem('cart')) || [];
 
 // Cart reducer to handle cart actions
 const cartReducer = (state, action) => {
@@ -25,7 +25,7 @@ const CartProvider = ({ children }) => {
   const [cart, dispatch] = useReducer(cartReducer, initialState);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    sessionStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   return (

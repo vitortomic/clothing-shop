@@ -7,22 +7,28 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     // Retrieve user data from localStorage if available
-    const storedUser = localStorage.getItem('user');
+    const storedUser = sessionStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
   // Function to handle login
   const login = (username, password) => {
     // Fake authentication: in a real app, replace this with a call to your authentication API
-    const authenticatedUser = { username };
-    setUser(authenticatedUser);
-    localStorage.setItem('user', JSON.stringify(authenticatedUser)); // Save user to localStorage
+    const storedUser = sessionStorage.getItem('user');
+    if (storedUser != null) {
+        alert("You must logout to login!");
+    } else {
+        const authenticatedUser = { username };
+        setUser(authenticatedUser);
+        sessionStorage.setItem('user', JSON.stringify(authenticatedUser)); // Save user to localStorage
+    }
   };
 
   // Function to handle logout
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user'); // Remove user from localStorage
+    sessionStorage.removeItem('user'); // Remove user from localStorage
+    sessionStorage.removeItem('cart')
   };
 
   return (

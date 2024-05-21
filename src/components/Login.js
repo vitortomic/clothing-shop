@@ -1,39 +1,42 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { Navigate } from 'react-router-dom';
 import '../styles/Login.css';
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { user, login } = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const username = event.target.elements.username.value;
+    const password = event.target.elements.password.value;
     login(username, password);
-    navigate('/');
   };
+
+  if (user) {
+    return (
+      <div className="login-container">
+        <h2>You are already logged in!</h2>
+        <p>Welcome back, {user.username}!</p>
+      </div>
+    );
+  }
 
   return (
     <div className="login-container">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit} className="login-form">
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <button type="submit" className="button">Login</button>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username:
+          <input type="text" name="username" required />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input type="password" name="password" required />
+        </label>
+        <br />
+        <button type="submit">Login</button>
       </form>
     </div>
   );
