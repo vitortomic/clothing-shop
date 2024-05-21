@@ -1,0 +1,44 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .app-header {
+    width: 100%;
+    background-color: #282c34;
+    padding: 20px;
+    color: white;
+    text-align: center;
+  }
+  
+  .app-nav {
+    width: 100%;
+    background-color: #61dafb;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .app-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .app-main {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+  }
+  
+  .button {
+    background-color: #61dafb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
