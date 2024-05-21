@@ -9,9 +9,18 @@ const Chatbot = ({ isOpen, onClose }) => {
   const [input, setInput] = useState('');
 
   useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to Rasa server');
+    });
+
     socket.on('bot_uttered', (response) => {
       setMessages((messages) => [...messages, { text: response.text, user: 'bot' }]);
     });
+
+    return () => {
+      socket.off('bot_uttered');
+      socket.off('connect');
+    };
   }, []);
 
   const sendMessage = () => {
