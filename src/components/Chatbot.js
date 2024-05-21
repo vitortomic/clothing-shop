@@ -4,7 +4,7 @@ import '../styles/Chatbot.css';
 
 const socket = io('http://localhost:5005'); // Ensure this is the correct port
 
-const Chatbot = () => {
+const Chatbot = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
 
@@ -20,8 +20,14 @@ const Chatbot = () => {
     setInput('');
   };
 
+  if (!isOpen) return null;
+
   return (
     <div className="chatbot-container">
+      <div className="chatbot-header">
+        <h3>Chatbot</h3>
+        <button onClick={onClose} className="close-button">X</button>
+      </div>
       <div className="messages">
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.user}`}>

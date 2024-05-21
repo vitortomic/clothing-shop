@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
@@ -8,9 +8,16 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import PrivateRoute from './components/PrivateRoute';
 import Chatbot from './components/Chatbot';
+import FloatingButton from './components/FloatingButton';
 import './styles/App.css';
 
 function App() {
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
+  const toggleChatbot = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
+
   return (
     <div className="app-container">
       <header className="app-header">
@@ -33,7 +40,8 @@ function App() {
           <Route path="/logout" element={<Logout />} />
         </Routes>
       </main>
-      {/**<Chatbot />**/}
+      <FloatingButton onClick={toggleChatbot} />
+      <Chatbot isOpen={isChatbotOpen} onClose={toggleChatbot} />
     </div>
   );
 }
