@@ -10,9 +10,14 @@ function ProductDetails() {
   const { dispatch } = useContext(CartContext);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/products/${id}`)
+    axios.get(`http://localhost:5000/products`)
       .then(response => {
-        setProduct(response.data);
+        const filteredProducts = response.data.filter(product => product.id === Number(id));
+        if (filteredProducts.length > 0) {
+            setProduct(filteredProducts[0]);
+        } else {
+            setProduct(null);
+        }
       })
       .catch(error => {
         console.error('There was an error fetching the product details!', error);
