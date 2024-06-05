@@ -1,59 +1,61 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { CartContext } from '../context/CartContext';
+import { DataGrid } from '@mui/x-data-grid';
+import { Grid, Button, Typography, Box } from '@mui/material';
 import '../styles/Cart.css';
-import { Container, Typography, Button, Grid, Card, CardContent, CardMedia } from '@mui/material';
 
-
-function Cart() {
+const Cart = () => {
   const { cart, dispatch } = useContext(CartContext);
 
-  const removeFromCart = (product) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: product });
+  const removeFromCart = (productId) => {
+    dispatch({ type: 'REMOVE_FROM_CART', payload: { id: productId } });
   };
 
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' });
-  };
+  const columns = [
+    { field: 'name', headerName: 'Product Name', flex: 1 },
+    { field: 'price', headerName: 'Price', flex: 1 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => removeFromCart(params.row.id)}
+        >
+          Remove
+        </Button>
+      ),
+    },
+  ];
+
+  const rows = cart.map((product, index) => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+  }));
+
+  const totalCost = useMemo(
+    () => cart.reduce((sum, product) => sum + product.price, 0),
+    [cart]
+  );
 
   return (
     <div className="cart-container">
-      <Grid container spacing={3}>
-        {cart.map(product => (
-          <Grid item key={product.id} xs={12} sm={6} md={4} className="cart-item">
-            <Card className="product-card">
-              <CardMedia
-                component="img"
-                height="200"
-                image={product.image}
-                alt={product.name}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {product.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  ${product.price}
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => removeFromCart(product)}
-                >
-                  Remove
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      <Button
-        variant="contained"
-        color="primary"
-        className="clear-cart-button"
-        onClick={clearCart}
-      >
-        Clear Cart
-      </Button>
+      <Box sx={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+        />
+      </Box>
+      <Box sx={{ mt: 2, textAlign: 'right' }}>
+        <Typography variant="h6">
+          Total Cost: ${totalCost.toFixed(2)}
+        </Typography>
+      </Box>
     </div>
   );
 };
