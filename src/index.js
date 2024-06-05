@@ -6,7 +6,6 @@ import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-// Create a root container
 const container = document.getElementById('root');
 const root = createRoot(container);
 

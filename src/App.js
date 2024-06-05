@@ -9,7 +9,9 @@ import Logout from './components/Logout';
 import PrivateRoute from './components/PrivateRoute';
 import Chatbot from './components/Chatbot';
 import FloatingButton from './components/FloatingButton';
-import './styles/App.css';
+import Search from './components/Search';
+import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
+import './App.css';
 
 function App() {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
@@ -20,26 +22,30 @@ function App() {
 
   return (
     <div className="app-container">
-      <header className="app-header">
-        <h1>Clothing Shop</h1>
-      </header>
-      <nav className="app-nav">
-        <a href="/">Home</a>
-        <a href="/products">Products</a>
-        <a href="/cart">Cart</a>
-        <a href="/login">Login</a>
-        <a href="/logout">Logout</a>
-      </nav>
-      <main className="app-main">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Clothing Shop
+          </Typography>
+          <Button color="inherit" href="/">Home</Button>
+          <Button color="inherit" href="/products">Products</Button>
+          <Button color="inherit" href="/cart">Cart</Button>
+          <Button color="inherit" href="/search">Search</Button>
+          <Button color="inherit" href="/login">Login</Button>
+          <Button color="inherit" href="/logout">Logout</Button>
+        </Toolbar>
+      </AppBar>
+      <Container style={{ marginTop: '20px' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<PrivateRoute component={Cart} />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
-      </main>
+      </Container>
       <FloatingButton onClick={toggleChatbot} />
       <Chatbot isOpen={isChatbotOpen} onClose={toggleChatbot} />
     </div>

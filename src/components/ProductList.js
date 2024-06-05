@@ -1,33 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Grid, Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-import '../styles/ProductList.css';
 
 function ProductList() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:5000/products')
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the products!', error);
-      });
+      .then(response => setProducts(response.data))
+      .catch(error => console.error('Error fetching products:', error));
   }, []);
 
   return (
-    <div className="product-list-container">
-      <h1>Products</h1>
-      <ul>
-        {products.map(product => (
-          <li key={product.id} className="product-item">
-            <Link to={`/products/${product.id}`}>{product.name}</Link>
-            <p>{product.price}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Grid container spacing={3}>
+      {products.map(product => (
+        <Grid item key={product.id} xs={12} sm={6} md={4}>
+          <Card>
+            <CardMedia
+              component="img"
+              height="140"
+              image={product.image}
+              alt={product.name}
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {product.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {product.price}
+              </Typography>
+              <Button
+                component={Link}
+                to={`/products/${product.id}`}
+                variant="contained"
+                color="primary"
+              >
+                View Details
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
   );
 }
 

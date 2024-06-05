@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
-import '../styles/ProductDetails.css';
+import { Container, Typography, Button, CardMedia } from '@mui/material';
 
 function ProductDetails() {
   const { id } = useParams();
@@ -12,7 +12,7 @@ function ProductDetails() {
   useEffect(() => {
     axios.get(`http://localhost:5000/products`)
       .then(response => {
-        const filteredProducts = response.data.filter(product => product.id === Number(id));
+        const filteredProducts = response.data.filter(product => product.id == Number(id));
         if (filteredProducts.length > 0) {
             setProduct(filteredProducts[0]);
         } else {
@@ -33,12 +33,23 @@ function ProductDetails() {
   }
 
   return (
-    <div className="product-details-container">
-      <h1>{product.name}</h1>
-      <p>{product.price}</p>
-      <img src={product.image} alt={product.name} />
-      <button onClick={addToCart} className="button">Add to Cart</button>
-    </div>
+    <Container>
+      <Typography variant="h4" component="h1" gutterBottom>
+        {product.name}
+      </Typography>
+      <CardMedia
+        component="img"
+        height="300"
+        image={product.image}
+        alt={product.name}
+      />
+      <Typography variant="h6" gutterBottom>
+        Price: ${product.price}
+      </Typography>
+      <Button variant="contained" color="primary" onClick={addToCart}>
+        Add to Cart
+      </Button>
+    </Container>
   );
 }
 
