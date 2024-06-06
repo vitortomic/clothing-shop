@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { CartContext } from '../context/CartContext';
 import { DataGrid } from '@mui/x-data-grid';
-import { Grid, Button, Typography, Box } from '@mui/material';
+import { Grid, Button, Typography, Box , Card, CardContent, CardHeader} from '@mui/material';
 import '../styles/Cart.css';
 
 const Cart = () => {
@@ -43,19 +43,39 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-        />
-      </Box>
-      <Box sx={{ mt: 2, textAlign: 'right' }}>
-        <Typography variant="h6">
-          Total Cost: ${totalCost.toFixed(2)}
-        </Typography>
-      </Box>
+      <Card>
+        <CardHeader title="Shopping Cart" />
+        <CardContent>
+          <Box sx={{ height: 400, width: '100%' }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              components={{
+                NoRowsOverlay: () => (
+                  <Typography variant="h6" sx={{ mt: 2 }}>
+                    Cart is empty
+                  </Typography>
+                ),
+              }}
+              sx={{
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: '#f5f5f5',
+                },
+                '& .MuiDataGrid-cell': {
+                  padding: '10px',
+                },
+              }}
+            />
+          </Box>
+          <Box sx={{ mt: 2, textAlign: 'right' }}>
+            <Typography variant="h6">
+              Total Cost: ${totalCost.toFixed(2)}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
     </div>
   );
 };
