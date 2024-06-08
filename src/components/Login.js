@@ -1,28 +1,40 @@
-import React, { useContext } from 'react';
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Container, TextField, Button, Typography, Box } from '@mui/material';
-import '../styles/Login.css';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
 
 function Login() {
   const { user, login } = useContext(AuthContext);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const username = event.target.elements.username.value;
     const password = event.target.elements.password.value;
-    login(username, password);
-
-    // Redirect to the previous page or home page after successful login
-    const from = location.state?.from?.pathname || '/';
-    navigate(from, { replace: true });
+    const result = login(username, password);
+    if (result.success) {
+      navigate(from, { replace: true });
+    } else {
+      setError(result.message);
+    }
   };
 
   if (user) {
-    const from = location.state?.from?.pathname || '/';
-    return <Navigate to={from} />;
+    return (
+      <Container maxWidth="sm" className="login-container">
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Typography variant="h4" gutterBottom>
+            You are already logged in!
+          </Typography>
+          <Typography variant="h6">
+            Welcome back, {user.username}!
+          </Typography>
+        </Box>
+      </Container>
+    );
   }
 
   return (
@@ -31,6 +43,7 @@ function Login() {
         <Typography variant="h4" gutterBottom>
           Login
         </Typography>
+        {error && <Alert severity="error">{error}</Alert>}
         <form onSubmit={handleSubmit}>
           <TextField
             label="Username"

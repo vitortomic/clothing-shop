@@ -4,6 +4,7 @@ import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
 import Cart from './components/Cart';
 import Login from './components/Login';
+import Register from './components/Register'; // Import Register component
 import PrivateRoute from './components/PrivateRoute';
 import Chatbot from './components/Chatbot';
 import FloatingButton from './components/FloatingButton';
@@ -32,7 +33,6 @@ function App() {
   const menuItems = [
     { text: 'Home', path: '/', icon: <HomeIcon /> },
     { text: 'Cart', path: '/cart', icon: <ShoppingCartIcon /> },
-
   ];
 
   return (
@@ -56,10 +56,16 @@ function App() {
             </ListItem>
           ))}
           {!user && (
-            <ListItem button component={Link} to="/login" onClick={toggleDrawer}>
-              <ListItemIcon><LoginIcon /></ListItemIcon>
-              <ListItemText primary="Login" />
-            </ListItem>
+            <>
+              <ListItem button component={Link} to="/login" onClick={toggleDrawer}>
+                <ListItemIcon><LoginIcon /></ListItemIcon>
+                <ListItemText primary="Login" />
+              </ListItem>
+              <ListItem button component={Link} to="/register" onClick={toggleDrawer}>
+                <ListItemIcon><LoginIcon /></ListItemIcon> {/* You might want to use a different icon */}
+                <ListItemText primary="Register" />
+              </ListItem>
+            </>
           )}
           {user && (
             <ListItem button onClick={() => { logout(); toggleDrawer(); }}>
@@ -77,6 +83,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} /> {/* Add Register route */}
         </Routes>
       </Container>
       <FloatingButton onClick={toggleChatbot} />
