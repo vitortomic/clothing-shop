@@ -1,7 +1,164 @@
 {
-    "products": [
-      { "id": 1, "name": "T-Shirt", "price": 19.99, "image": "tshirt.jpg" },
-      { "id": 2, "name": "Jeans", "price": 39.99, "image": "jeans.jpg" },
-      { "id": 3, "name": "Jacket", "price": 59.99, "image": "jacket.jpg" }
-    ]
+  "products": [
+    { 
+      "id": 1, 
+      "name": "Classic T-Shirt", 
+      "price": 19.99, 
+      "image": "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/3000w/products/201/7118/5026_CLASSIC_TEE_BLACK_BACK__02656.1716493855.jpg?c=1", 
+      "category": "T-Shirt", 
+      "description": "A timeless classic T-Shirt made from high-quality cotton." 
+    },
+    { 
+      "id": 2, 
+      "name": "Slim Fit Jeans", 
+      "price": 39.99, 
+      "image": "https://assets.burberry.com/is/image/Burberryltd/FE2E1006-6A64-47B2-888C-2F97016FA4ED?$BBY_V3_SL_1$&wid=1501&hei=1500", 
+      "category": "Jeans", 
+      "description": "Stylish slim fit jeans that offer a modern look and comfortable feel." 
+    },
+    { 
+      "id": 3, 
+      "name": "Leather Jacket", 
+      "price": 89.99, 
+      "image": "https://t4.ftcdn.net/jpg/05/93/78/71/360_F_593787107_rbWfwMekCQcAdgxDHPhEioWATjdTEMHh.jpg", 
+      "category": "Jacket", 
+      "description": "A premium leather jacket that adds a touch of sophistication to any outfit." 
+    },
+    { 
+      "id": 4, 
+      "name": "Summer Dress", 
+      "price": 29.99, 
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUPNcS-pBP8ebubltxpcw0yzbBXEod_iTlXg&s", 
+      "category": "Dress", 
+      "description": "A lightweight summer dress perfect for warm weather and casual outings." 
+    },
+    { 
+      "id": 5, 
+      "name": "Cargo Shorts", 
+      "price": 24.99, 
+      "image": "https://via.placeholder.com/140x100?text=Shorts", 
+      "category": "Shorts", 
+      "description": "Practical cargo shorts with multiple pockets for convenience and style." 
+    },
+    { 
+      "id": 6, 
+      "name": "Hooded Sweatshirt", 
+      "price": 49.99, 
+      "image": "https://via.placeholder.com/140x100?text=Sweatshirt", 
+      "category": "Sweatshirt", 
+      "description": "A cozy hooded sweatshirt perfect for chilly days and casual wear." 
+    },
+    { 
+      "id": 7, 
+      "name": "Formal Pants", 
+      "price": 59.99, 
+      "image": "https://via.placeholder.com/140x100?text=Pants", 
+      "category": "Pants", 
+      "description": "Elegant formal pants suitable for office wear and special occasions." 
+    },
+    { 
+      "id": 8, 
+      "name": "Winter Coat", 
+      "price": 119.99, 
+      "image": "https://via.placeholder.com/140x100?text=Coat", 
+      "category": "Coat", 
+      "description": "A warm and stylish winter coat to keep you comfortable in cold weather." 
+    },
+    { 
+      "id": 9, 
+      "name": "Polo Shirt", 
+      "price": 25.99, 
+      "image": "https://via.placeholder.com/140x100?text=Polo+Shirt", 
+      "category": "Shirt", 
+      "description": "A classic polo shirt that combines comfort and style for everyday wear." 
+    },
+    { 
+      "id": 10, 
+      "name": "Casual Shorts", 
+      "price": 19.99, 
+      "image": "https://via.placeholder.com/140x100?text=Shorts", 
+      "category": "Shorts", 
+      "description": "Comfortable casual shorts ideal for outdoor activities and lounging." 
+    },
+    { 
+      "id": 11, 
+      "name": "Denim Jacket", 
+      "price": 69.99, 
+      "image": "https://via.placeholder.com/140x100?text=Jacket", 
+      "category": "Jacket", 
+      "description": "A versatile denim jacket that adds a cool touch to any outfit." 
+    },
+    { 
+      "id": 12, 
+      "name": "Graphic T-Shirt", 
+      "price": 21.99, 
+      "image": "https://via.placeholder.com/140x100?text=T-Shirt", 
+      "category": "T-Shirt", 
+      "description": "A trendy graphic T-Shirt that showcases your unique style." 
+    },
+    { 
+      "id": 13, 
+      "name": "Linen Pants", 
+      "price": 34.99, 
+      "image": "https://via.placeholder.com/140x100?text=Pants", 
+      "category": "Pants", 
+      "description": "Breathable linen pants perfect for warm weather and casual settings." 
+    },
+    { 
+      "id": 14, 
+      "name": "Sweater Dress", 
+      "price": 49.99, 
+      "image": "https://via.placeholder.com/140x100?text=Dress", 
+      "category": "Dress", 
+      "description": "A chic sweater dress that combines warmth and fashion effortlessly." 
+    },
+    { 
+      "id": 15, 
+      "name": "Track Jacket", 
+      "price": 59.99, 
+      "image": "https://via.placeholder.com/140x100?text=Jacket", 
+      "category": "Jacket", 
+      "description": "A sporty track jacket ideal for workouts and casual wear." 
+    },
+    { 
+      "id": 16, 
+      "name": "Athletic Shorts", 
+      "price": 19.99, 
+      "image": "https://via.placeholder.com/140x100?text=Shorts", 
+      "category": "Shorts", 
+      "description": "Lightweight athletic shorts designed for performance and comfort." 
+    },
+    { 
+      "id": 17, 
+      "name": "Button-Down Shirt", 
+      "price": 35.99, 
+      "image": "https://via.placeholder.com/140x100?text=Shirt", 
+      "category": "Shirt", 
+      "description": "A versatile button-down shirt that works for both formal and casual occasions." 
+    },
+    { 
+      "id": 18, 
+      "name": "Wool Coat", 
+      "price": 149.99, 
+      "image": "https://via.placeholder.com/140x100?text=Coat", 
+      "category": "Coat", 
+      "description": "A luxurious wool coat that provides warmth and style during winter." 
+    },
+    { 
+      "id": 19, 
+      "name": "V-Neck Sweater", 
+      "price": 29.99, 
+      "image": "https://via.placeholder.com/140x100?text=Sweater", 
+      "category": "Sweater", 
+      "description": "A comfortable V-neck sweater perfect for layering and staying cozy." 
+    },
+    { 
+      "id": 20, 
+      "name": "Skinny Jeans", 
+      "price": 49.99, 
+      "image": "https://via.placeholder.com/140x100?text=Jeans", 
+      "category": "Jeans", 
+      "description": "Trendy skinny jeans that offer a sleek and modern look." 
+    }
+  ]
 }
