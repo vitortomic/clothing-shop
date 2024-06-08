@@ -1,15 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import { Container, Typography, Button, CardMedia, Box, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation(); // Use useLocation
   const [product, setProduct] = useState(null);
   const { dispatch } = useContext(CartContext);
+  const { user } = useContext(AuthContext); // Use AuthContext
 
   useEffect(() => {
     axios.get(`http://localhost:5000/products`)
@@ -27,7 +30,11 @@ function ProductDetails() {
   }, [id]);
 
   const addToCart = () => {
-    dispatch({ type: 'ADD_TO_CART', payload: product });
+    if (!user) {
+      navigate('/login', { state: { from: location } });
+    } else {
+      dispatch({ type: 'ADD_TO_CART', payload: product });
+    }
   };
 
   if (!product) {

@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton, TextField } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import { CartContext } from '../context/CartContext';
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import CloseIcon from '@mui/icons-material/Close';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import '../styles/ProductList.css'; // Make sure to create this CSS file
@@ -11,6 +12,9 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const { dispatch } = useContext(CartContext);
+  const { user } = useContext(AuthContext); // Use AuthContext
+  const navigate = useNavigate(); // Use navigate
+  const location = useLocation(); // Use useLocation
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
 
@@ -21,7 +25,11 @@ function ProductList() {
   }, []);
 
   const addToCart = (product) => {
-    dispatch({ type: 'ADD_TO_CART', payload: product });
+    if (!user) {
+      navigate('/login', { state: { from: location } });
+    } else {
+      dispatch({ type: 'ADD_TO_CART', payload: product });
+    }
   };
 
   const handleOpen = (image) => {
