@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
 // Create the context
 const AuthContext = createContext();
@@ -39,6 +39,12 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // Function to handle updating user profile
+  const updateUser = (updatedUser) => {
+    sessionStorage.setItem(updatedUser.username, JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  };
+
   // Function to handle logout
   const logout = () => {
     setUser(null);
@@ -46,7 +52,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
