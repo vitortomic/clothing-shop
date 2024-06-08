@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
-import { Container, TextField, Button, Typography } from '@mui/material';
+import { Container, TextField, Button, Typography, Box } from '@mui/material';
 import '../styles/Login.css';
 
 function Login() {
@@ -16,30 +16,51 @@ function Login() {
 
   if (user) {
     return (
-      <div className="login-container">
-        <h2>You are already logged in!</h2>
-        <p>Welcome back, {user.username}!</p>
-      </div>
+      <Container maxWidth="sm" className="login-container">
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Typography variant="h4" gutterBottom>
+            You are already logged in!
+          </Typography>
+          <Typography variant="h6">
+            Welcome back, {user.username}!
+          </Typography>
+        </Box>
+      </Container>
     );
   }
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <input type="text" name="username" required />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" name="password" required />
-        </label>
-        <br />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <Container maxWidth="sm" className="login-container">
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Login
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Username"
+            name="username"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <Box sx={{ mt: 2 }}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Login
+            </Button>
+          </Box>
+        </form>
+      </Box>
+    </Container>
   );
 }
 

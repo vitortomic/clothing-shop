@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
@@ -16,11 +16,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { AuthContext } from './context/AuthContext'; // Import AuthContext
 import './App.css';
 
 function App() {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user, logout } = useContext(AuthContext); // Use AuthContext
 
   const toggleChatbot = () => {
     setIsChatbotOpen(!isChatbotOpen);
@@ -34,8 +36,6 @@ function App() {
     { text: 'Home', path: '/', icon: <HomeIcon /> },
     { text: 'Cart', path: '/cart', icon: <ShoppingCartIcon /> },
     { text: 'Search', path: '/search', icon: <SearchIcon /> },
-    { text: 'Login', path: '/login', icon: <LoginIcon /> },
-    { text: 'Logout', path: '/logout', icon: <LogoutIcon /> },
   ];
 
   return (
@@ -58,6 +58,18 @@ function App() {
               <ListItemText primary={item.text} />
             </ListItem>
           ))}
+          {!user && (
+            <ListItem button component={Link} to="/login" onClick={toggleDrawer}>
+              <ListItemIcon><LoginIcon /></ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItem>
+          )}
+          {user && (
+            <ListItem button onClick={() => { logout(); toggleDrawer(); }}>
+              <ListItemIcon><LogoutIcon /></ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
+          )}
         </List>
       </Drawer>
       <Container style={{ marginTop: '20px' }}>
