@@ -2,21 +2,17 @@
     padding: 20px;
   }
   
-  .product-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-  }
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
   
-  .clear-cart-button {
-    margin-top: 20px;
-  }
+.cart-container {
+  padding: 20px;
+}
   
-  .cart-container {
-    padding: 20px;
-  }
-  
-  .clear-cart-button {
-    margin-top: 20px;
-  }
+.clear-cart-button {
+  margin-top: 20px;
+}

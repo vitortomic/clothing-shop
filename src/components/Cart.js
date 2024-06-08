@@ -1,7 +1,8 @@
 import React, { useContext, useMemo } from 'react';
 import { CartContext } from '../context/CartContext';
 import { DataGrid } from '@mui/x-data-grid';
-import { Grid, Button, Typography, Box , Card, CardContent, CardHeader} from '@mui/material';
+import { Grid, Typography, Box, Card, CardContent, CardHeader, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import '../styles/Cart.css';
 
 const Cart = () => {
@@ -14,18 +15,18 @@ const Cart = () => {
   const columns = [
     { field: 'name', headerName: 'Product Name', flex: 1 },
     { field: 'price', headerName: 'Price', flex: 1 },
+    { field: 'quantity', headerName: 'Quantity', flex: 1 },
     {
       field: 'actions',
       headerName: 'Actions',
       flex: 1,
       renderCell: (params) => (
-        <Button
-          variant="contained"
+        <IconButton
           color="secondary"
           onClick={() => removeFromCart(params.row.id)}
         >
-          Remove
-        </Button>
+          <DeleteIcon style={{ color: 'red' }} />
+        </IconButton>
       ),
     },
   ];
@@ -34,10 +35,11 @@ const Cart = () => {
     id: product.id,
     name: product.name,
     price: product.price,
+    quantity: product.quantity,
   }));
 
   const totalCost = useMemo(
-    () => cart.reduce((sum, product) => sum + product.price, 0),
+    () => cart.reduce((sum, product) => sum + (product.price * product.quantity), 0),
     [cart]
   );
 
