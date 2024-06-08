@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
-import Home from './components/Home';
 import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
 import Cart from './components/Cart';
@@ -17,7 +16,6 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import './App.css';
 
 function App() {
@@ -34,7 +32,6 @@ function App() {
 
   const menuItems = [
     { text: 'Home', path: '/', icon: <HomeIcon /> },
-    { text: 'Products', path: '/products', icon: <ListAltIcon /> },
     { text: 'Cart', path: '/cart', icon: <ShoppingCartIcon /> },
     { text: 'Search', path: '/search', icon: <SearchIcon /> },
     { text: 'Login', path: '/login', icon: <LoginIcon /> },
@@ -65,8 +62,7 @@ function App() {
       </Drawer>
       <Container style={{ marginTop: '20px' }}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<ProductList />} />
+          <Route path="/" element={<ProductList />} />
           <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<PrivateRoute component={Cart} />} />
           <Route path="/search" element={<Search />} />
