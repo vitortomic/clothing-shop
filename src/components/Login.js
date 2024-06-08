@@ -1,32 +1,28 @@
 import React, { useContext } from 'react';
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { Navigate } from 'react-router-dom';
 import { Container, TextField, Button, Typography, Box } from '@mui/material';
 import '../styles/Login.css';
 
 function Login() {
   const { user, login } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const username = event.target.elements.username.value;
     const password = event.target.elements.password.value;
     login(username, password);
+
+    // Redirect to the previous page or home page after successful login
+    const from = location.state?.from?.pathname || '/';
+    navigate(from, { replace: true });
   };
 
   if (user) {
-    return (
-      <Container maxWidth="sm" className="login-container">
-        <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Typography variant="h4" gutterBottom>
-            You are already logged in!
-          </Typography>
-          <Typography variant="h6">
-            Welcome back, {user.username}!
-          </Typography>
-        </Box>
-      </Container>
-    );
+    const from = location.state?.from?.pathname || '/';
+    return <Navigate to={from} />;
   }
 
   return (

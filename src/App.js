@@ -4,25 +4,22 @@ import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
 import Cart from './components/Cart';
 import Login from './components/Login';
-import Logout from './components/Logout';
 import PrivateRoute from './components/PrivateRoute';
 import Chatbot from './components/Chatbot';
 import FloatingButton from './components/FloatingButton';
-import Search from './components/Search';
 import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SearchIcon from '@mui/icons-material/Search';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { AuthContext } from './context/AuthContext'; // Import AuthContext
+import { AuthContext } from './context/AuthContext';
 import './App.css';
 
 function App() {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { user, logout } = useContext(AuthContext); // Use AuthContext
+  const { user, logout } = useContext(AuthContext);
 
   const toggleChatbot = () => {
     setIsChatbotOpen(!isChatbotOpen);
@@ -35,7 +32,7 @@ function App() {
   const menuItems = [
     { text: 'Home', path: '/', icon: <HomeIcon /> },
     { text: 'Cart', path: '/cart', icon: <ShoppingCartIcon /> },
-    { text: 'Search', path: '/search', icon: <SearchIcon /> },
+
   ];
 
   return (
@@ -76,10 +73,10 @@ function App() {
         <Routes>
           <Route path="/" element={<ProductList />} />
           <Route path="/products/:id" element={<ProductDetails />} />
-          <Route path="/cart" element={<PrivateRoute component={Cart} />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/cart" element={<PrivateRoute />}>
+            <Route path="/cart" element={<Cart />} />
+          </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
         </Routes>
       </Container>
       <FloatingButton onClick={toggleChatbot} />
