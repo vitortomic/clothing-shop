@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton, TextField, Snackbar, Alert } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton, TextField, Snackbar, Alert, FormControl, FormControlLabel, FormGroup, FormLabel, Switch } from '@mui/material';
 import { Link, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import CloseIcon from '@mui/icons-material/Close';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import '../styles/ProductList.css'; // Make sure to create this CSS file
 
@@ -18,10 +19,17 @@ function ProductList() {
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [filterModalOpen, setFilterModalOpen] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:5000/products')
-      .then(response => setProducts(response.data))
+      .then(response => {
+        setProducts(response.data);
+        const uniqueCategories = [...new Set(response.data.map(product => product.category))];
+        setCategories(uniqueCategories);
+      })
       .catch(error => console.error('Error fetching products:', error));
   }, []);
 
@@ -30,7 +38,7 @@ function ProductList() {
       navigate('/login', { state: { from: location } });
     } else {
       dispatch({ type: 'ADD_TO_CART', payload: product });
-      setSnackbarOpen(true); // Show snackbar
+      setSnackbarOpen(true);
     }
   };
 
@@ -60,9 +68,36 @@ function ProductList() {
     setSearchQuery(event.target.value);
   };
 
+  const handleFilterModalOpen = () => {
+    setFilterModalOpen(true);
+  };
+
+  const handleFilterModalClose = () => {
+    setFilterModalOpen(false);
+  };
+
+  const handleCategoryChange = (event) => {
+    const category = event.target.name;
+    setSelectedCategories((prevSelectedCategories) =>
+      prevSelectedCategories.includes(category)
+        ? prevSelectedCategories.filter((cat) => cat !== category)
+        : [...prevSelectedCategories, category]
+    );
+  };
+
+  const applyFilter = () => {
+    handleFilterModalClose();
+  };
+
+  const removeFilter = () => {
+    setSelectedCategories([]);
+    handleFilterModalClose();
+  };
+
   const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    product.description.toLowerCase().includes(searchQuery.toLowerCase())
+    (product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    product.description.toLowerCase().includes(searchQuery.toLowerCase())) && 
+    (selectedCategories.length === 0 || selectedCategories.includes(product.category))
   );
 
   return (
@@ -73,8 +108,17 @@ function ProductList() {
           variant="outlined"
           value={searchQuery}
           onChange={handleSearchChange}
-          sx={{ width: '100%', maxWidth: '600px' }}
+          sx={{ width: '100%', maxWidth: '600px', mr: 2 }}
         />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleFilterModalOpen}
+          startIcon={<FilterListIcon />}
+          sx={{ width: '140px' }}
+        >
+          Filter
+        </Button>
       </Box>
       <Grid container spacing={3}>
         <TransitionGroup component={null}>
@@ -206,6 +250,69 @@ function ProductList() {
           Product added to cart!
         </Alert>
       </Snackbar>
+      <Modal
+        open={filterModalOpen}
+        onClose={handleFilterModalClose}
+        aria-labelledby="filter-modal-title"
+        aria-describedby="filter-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80%',
+            maxWidth: '600px',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            outline: 'none',
+          }}
+        >
+          <IconButton
+            aria-label="close"
+            onClick={handleFilterModalClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography id="filter-modal-title" variant="h6" component="h2">
+            Filter by Category
+          </Typography>
+          <FormControl component="fieldset" sx={{ mt: 2 }}>
+            <FormLabel component="legend">Categories</FormLabel>
+            <FormGroup>
+              {categories.map((category) => (
+                <FormControlLabel
+                  key={category}
+                  control={
+                    <Switch
+                      checked={selectedCategories.includes(category)}
+                      onChange={handleCategoryChange}
+                      name={category}
+                    />
+                  }
+                  label={category}
+                />
+              ))}
+            </FormGroup>
+          </FormControl>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Button variant="contained" color="primary" onClick={applyFilter}>
+              Apply Filter
+            </Button>
+            <Button variant="outlined" sx={{ color: 'black', borderColor: 'black' }} onClick={removeFilter}>
+              Remove Filter
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 }
