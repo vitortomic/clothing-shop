@@ -10,8 +10,14 @@ import PrivateRoute from './components/PrivateRoute';
 import Chatbot from './components/Chatbot';
 import FloatingButton from './components/FloatingButton';
 import Search from './components/Search';
-import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, Container } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SearchIcon from '@mui/icons-material/Search';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import './App.css';
 
 function App() {
@@ -27,12 +33,12 @@ function App() {
   };
 
   const menuItems = [
-    { text: 'Home', path: '/' },
-    { text: 'Products', path: '/products' },
-    { text: 'Cart', path: '/cart' },
-    { text: 'Search', path: '/search' },
-    { text: 'Login', path: '/login' },
-    { text: 'Logout', path: '/logout' },
+    { text: 'Home', path: '/', icon: <HomeIcon /> },
+    { text: 'Products', path: '/products', icon: <ListAltIcon /> },
+    { text: 'Cart', path: '/cart', icon: <ShoppingCartIcon /> },
+    { text: 'Search', path: '/search', icon: <SearchIcon /> },
+    { text: 'Login', path: '/login', icon: <LoginIcon /> },
+    { text: 'Logout', path: '/logout', icon: <LogoutIcon /> },
   ];
 
   return (
@@ -51,6 +57,7 @@ function App() {
         <List>
           {menuItems.map((item, index) => (
             <ListItem button component={Link} to={item.path} key={index} onClick={toggleDrawer}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItem>
           ))}
