@@ -16,7 +16,15 @@ function ProductList() {
     <Grid container spacing={3}>
       {products.map(product => (
         <Grid item key={product.id} xs={12} sm={6} md={4}>
-          <Card>
+          <Card
+            sx={{
+              transition: 'transform 0.3s, box-shadow 0.3s',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                boxShadow: '0 10px 20px rgba(0, 0, 0, 0.15)',
+              },
+            }}
+          >
             <CardMedia
               component="img"
               height="140"
@@ -28,7 +36,7 @@ function ProductList() {
                 {product.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {product.price}
+                ${product.price.toFixed(2)}
               </Typography>
               <Button
                 component={Link}
