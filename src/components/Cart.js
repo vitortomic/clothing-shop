@@ -1,12 +1,15 @@
 import React, { useContext, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import { DataGrid } from '@mui/x-data-grid';
 import { Typography, Box, Card, CardContent, CardHeader, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import '../styles/Cart.css';
 
 const Cart = () => {
   const { cart, dispatch } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const removeFromCart = (productId) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: { id: productId } });
@@ -55,6 +58,13 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
+      <IconButton
+        aria-label="back"
+        onClick={() => navigate(-1)}
+        sx={{ position: 'fixed', top: 80, left: 16 }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
       <Card>
         <CardHeader title="Shopping Cart" />
         <CardContent>

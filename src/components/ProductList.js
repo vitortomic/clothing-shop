@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton, TextField } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton, TextField, Snackbar, Alert } from '@mui/material';
 import { Link, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext'; // Import AuthContext
@@ -17,6 +17,7 @@ function ProductList() {
   const location = useLocation(); // Use useLocation
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     axios.get('http://localhost:5000/products')
@@ -29,7 +30,20 @@ function ProductList() {
       navigate('/login', { state: { from: location } });
     } else {
       dispatch({ type: 'ADD_TO_CART', payload: product });
+      setSnackbarOpen(true); // Show snackbar
     }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const handleSnackbarClick = () => {
+    setSnackbarOpen(false);
+    navigate('/cart');
   };
 
   const handleOpen = (image) => {
@@ -165,6 +179,33 @@ function ProductList() {
           <img src={selectedImage} alt="Selected" style={{ width: '100%' }} />
         </Box>
       </Modal>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert
+          severity="success"
+          sx={{ width: '100%', cursor: 'pointer' }}
+          onClick={handleSnackbarClick}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleSnackbarClose();
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
+          Product added to cart!
+        </Alert>
+      </Snackbar>
     </>
   );
 }
