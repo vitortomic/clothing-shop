@@ -1,9 +1,23 @@
 .product-list-container {
-    text-align: center;
-  }
+  text-align: center;
+}
+
+.product-item {
+  list-style: none;
+  margin: 20px 0;
+}
   
-  .product-item {
-    list-style: none;
-    margin: 20px 0;
-  }
-  
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-out;
+}
