@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { CartContext } from '../context/CartContext';
 import { DataGrid } from '@mui/x-data-grid';
-import { Grid, Typography, Box, Card, CardContent, CardHeader, IconButton } from '@mui/material';
+import { Typography, Box, Card, CardContent, CardHeader, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../styles/Cart.css';
 
@@ -14,7 +14,16 @@ const Cart = () => {
 
   const columns = [
     { field: 'name', headerName: 'Product Name', flex: 1 },
-    { field: 'price', headerName: 'Price', flex: 1 },
+    { 
+      field: 'price', 
+      headerName: 'Price', 
+      flex: 1,
+      renderCell: (params) => (
+        <Typography>
+          ${params.value.toFixed(2)}
+        </Typography>
+      )
+    },
     { field: 'quantity', headerName: 'Quantity', flex: 1 },
     {
       field: 'actions',
@@ -24,6 +33,7 @@ const Cart = () => {
         <IconButton
           color="secondary"
           onClick={() => removeFromCart(params.row.id)}
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
           <DeleteIcon style={{ color: 'red' }} />
         </IconButton>
@@ -31,7 +41,7 @@ const Cart = () => {
     },
   ];
 
-  const rows = cart.map((product, index) => ({
+  const rows = cart.map((product) => ({
     id: product.id,
     name: product.name,
     price: product.price,
@@ -52,8 +62,10 @@ const Cart = () => {
             <DataGrid
               rows={rows}
               columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
+              disableSelectionOnClick
+              hideFooterPagination
+              autoHeight={false}
+              hideFooter
               components={{
                 NoRowsOverlay: () => (
                   <Typography variant="h6" sx={{ mt: 2 }}>
@@ -66,7 +78,15 @@ const Cart = () => {
                   backgroundColor: '#f5f5f5',
                 },
                 '& .MuiDataGrid-cell': {
-                  padding: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                },
+                '& .MuiDataGrid-cell--textLeft': {
+                  justifyContent: 'flex-start',
+                },
+                '& .MuiDataGrid-cell--textRight': {
+                  justifyContent: 'flex-end',
                 },
               }}
             />
