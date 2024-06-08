@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, Modal, IconButton, TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import CloseIcon from '@mui/icons-material/Close';
 
 function ProductList() {
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const { dispatch } = useContext(CartContext);
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
@@ -31,10 +32,28 @@ function ProductList() {
     setSelectedImage('');
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredProducts = products.filter(product => 
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    product.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+        <TextField
+          label="Search Products"
+          variant="outlined"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          sx={{ width: '100%', maxWidth: '600px' }}
+        />
+      </Box>
       <Grid container spacing={3}>
-        {products.map(product => (
+        {filteredProducts.map(product => (
           <Grid item key={product.id} xs={12} sm={6} md={4}>
             <Card
               sx={{
