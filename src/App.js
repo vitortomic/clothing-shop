@@ -18,6 +18,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ChatIcon from '@mui/icons-material/Chat';
 import { AuthContext } from './context/AuthContext';
 import './App.css';
+import { Helmet } from 'react-helmet';
 
 function App() {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
@@ -44,6 +45,10 @@ function App() {
 
   return (
     <div className="app-container">
+      <Helmet>
+        <title>Clothing Shop</title>
+        <link rel="icon" href="https://cdn-icons-png.flaticon.com/256/863/863684.png" />
+      </Helmet>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer}>

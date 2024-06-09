@@ -7,7 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import theme from './theme'; // Import your custom theme
+import theme from './theme';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
