@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
 
 function Login() {
@@ -68,6 +68,11 @@ function Login() {
             </Button>
           </Box>
         </form>
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography variant="body2">
+            You don't have an account yet? <Link to="/register">Register here</Link>
+          </Typography>
+        </Box>
       </Box>
     </Container>
   );
