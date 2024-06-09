@@ -1,0 +1,157 @@
+version: "3.1"
+
+nlu:
+  - intent: ask_product_info
+    examples: |
+      - I am looking for [Classic T-Shirt](product_name)
+      - I am looking for [Slim Fit Jeans](product_name)
+      - I am looking for [Leather Jacket](product_name)
+      - I am looking for [Summer Dress](product_name)
+      - I am looking for [Cargo Shorts](product_name)
+      - I am looking for [Hooded Sweatshirt](product_name)
+      - I am looking for [Formal Pants](product_name)
+      - I am looking for [Winter Coat](product_name)
+      - I am looking for [Polo Shirt](product_name)
+      - I am looking for [Casual Shorts](product_name)
+      - I am looking for [Denim Jacket](product_name)
+      - I am looking for [Graphic T-Shirt](product_name)
+      - I am looking for [Linen Pants](product_name)
+      - I am looking for [Sweater Dress](product_name)
+      - I am looking for [Track Jacket](product_name)
+      - I am looking for [Athletic Shorts](product_name)
+      - I am looking for [Button-Down Shirt](product_name)
+      - I am looking for [Wool Coat](product_name)
+      - I am looking for [V-Neck Sweater](product_name)
+      - I am looking for [Skinny Jeans](product_name)
+      - Do you have any [Summer Dress](product_name) products?
+      - I want to buy [Cargo Shorts](product_name)
+      - Show me [Hooded Sweatshirt](product_name)
+      - I need a [Formal Pants](product_name)
+      - I am interested in [Winter Coat](product_name)
+      - Can you show me [Polo Shirt](product_name)?
+      - Do you have any [Casual Shorts](product_name) available?
+      - I am looking for [Denim Jacket](product_name) in medium size.
+      - I want to buy a [Linen Pants](product_name)
+
+  - intent: add_to_cart
+    examples: |
+      - Add [Leather Jacket](product_name) to my cart
+      - I want to add [Summer Dress](product_name) to my cart
+      - Can you add [Cargo Shorts](product_name) to the cart?
+      - Please add [Hooded Sweatshirt](product_name) to my cart
+      - Put [Polo Shirt](product_name) in my cart
+      - Add [Casual Shorts](product_name) to the cart
+      - I want to add [Denim Jacket](product_name) to my cart
+      - Can you add [Linen Pants](product_name) to the cart?
+      - Add [Classic T-Shirt](product_name) to the cart
+      - Add [Slim Fit Jeans](product_name) to the cart
+      - Add [Leather Jacket](product_name) to the cart
+      - Add [Summer Dress](product_name) to the cart
+      - Add [Cargo Shorts](product_name) to the cart
+      - Add [Hooded Sweatshirt](product_name) to the cart
+      - Add [Formal Pants](product_name) to the cart
+      - Add [Winter Coat](product_name) to the cart
+      - Add [Polo Shirt](product_name) to the cart
+      - Add [Casual Shorts](product_name) to the cart
+      - Add [Denim Jacket](product_name) to the cart
+      - Add [Graphic T-Shirt](product_name) to the cart
+      - Add [Linen Pants](product_name) to the cart
+      - Add [Sweater Dress](product_name) to the cart
+      - Add [Track Jacket](product_name) to the cart
+      - Add [Athletic Shorts](product_name) to the cart
+      - Add [Button-Down Shirt](product_name) to the cart
+      - Add [Wool Coat](product_name) to the cart
+      - Add [V-Neck Sweater](product_name) to the cart
+      - Add [Skinny Jeans](product_name) to the cart
+
+  - intent: greet
+    examples: |
+      - hey
+      - hello
+      - hi
+      - hello there
+      - good morning
+      - good evening
+      - moin
+      - hey there
+      - let's go
+      - hey dude
+      - goodmorning
+      - goodevening
+      - good afternoon
+
+  - intent: goodbye
+    examples: |
+      - cu
+      - good by
+      - cee you later
+      - good night
+      - bye
+      - goodbye
+      - have a nice day
+      - see you around
+      - bye bye
+      - see you later
+
+  - intent: affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+
+  - intent: deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+
+  - intent: mood_great
+    examples: |
+      - perfect
+      - great
+      - amazing
+      - feeling like a king
+      - wonderful
+      - I am feeling very good
+      - I am great
+      - I am amazing
+      - I am going to save the world
+      - super stoked
+      - extremely good
+      - so so perfect
+      - so good
+      - so perfect
+
+  - intent: mood_unhappy
+    examples: |
+      - my day was horrible
+      - I am sad
+      - I don't feel very well
+      - I am disappointed
+      - super sad
+      - I'm so sad
+      - sad
+      - very sad
+      - unhappy
+      - not good
+      - not very good
+      - extremly sad
+      - so saad
+      - so sad
+
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?
+
+entities:
+  - product_name
