@@ -81,7 +81,7 @@ const Chatbot = ({ isOpen, onClose }) => {
             key={index}
             sx={{
               textAlign: msg.sender === 'user' ? 'right' : 'left',
-              bgcolor: msg.sender === 'user' ? 'primary.light' : 'secondary.light',
+              bgcolor: msg.sender === 'user' ? 'primary.light' : 'white',
               color: msg.sender === 'user' ? 'white' : 'black',
               p: 1,
               borderRadius: 1,
