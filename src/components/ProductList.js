@@ -316,7 +316,7 @@ function ProductList() {
             <CloseIcon />
           </IconButton>
           <Typography id="filter-modal-title" variant="h6" component="h2">
-            Filter by Category
+            Filter products
           </Typography>
           <FormControl component="fieldset" sx={{ mt: 2 }}>
             <FormLabel component="legend">Categories</FormLabel>
