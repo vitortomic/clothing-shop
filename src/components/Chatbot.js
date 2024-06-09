@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Button, TextField, Typography, Paper, IconButton, Snackbar, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
@@ -13,6 +14,7 @@ const Chatbot = ({ isOpen, onClose }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { dispatch } = useContext(CartContext);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
@@ -76,6 +78,11 @@ const Chatbot = ({ isOpen, onClose }) => {
       sendMessage(input);
       setInput('');
     }
+  };
+
+  const handleSnackbarClick = () => {
+    setSnackbarOpen(false);
+    navigate('/cart');
   };
 
   const handleKeyPress = (event) => {
@@ -153,9 +160,22 @@ const Chatbot = ({ isOpen, onClose }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <Alert
-          onClose={handleSnackbarClose}
           severity="success"
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', cursor: 'pointer' }}
+          onClick={handleSnackbarClick}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleSnackbarClose();
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
         >
           Product added to cart!
         </Alert>
