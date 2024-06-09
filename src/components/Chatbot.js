@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Button, TextField, Typography, Paper, IconButton } from '@mui/material';
+import React, { useState, useEffect, useContext } from 'react';
+import { Box, Button, TextField, Typography, Paper, IconButton, Snackbar, Alert } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import { CartContext } from '../context/CartContext';
+import { AuthContext } from '../context/AuthContext';
 
 const Chatbot = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [products, setProducts] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const { dispatch } = useContext(CartContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     if (isOpen) {
@@ -14,6 +20,14 @@ const Chatbot = ({ isOpen, onClose }) => {
       sendMessage('Hello'); // Send initial greeting message when the chatbot opens
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/products')
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+  }, []);
 
   const sendMessage = async (message) => {
     if (!message) return;
@@ -27,14 +41,29 @@ const Chatbot = ({ isOpen, onClose }) => {
         message: message,
       });
 
-      const botMessages = response.data.map((msg) => ({
-        sender: 'bot',
-        message: msg.text,
-      }));
+      const botMessages = response.data.map((msg) => {
+        if (msg.custom) {
+          handleCustomMessage(msg.custom);
+        }
+        return {
+          sender: 'bot',
+          message: msg.text,
+        };
+      });
 
       setMessages((prevMessages) => [...prevMessages, ...botMessages]);
     } catch (error) {
       console.error('Error communicating with Rasa:', error);
+    }
+  };
+
+  const handleCustomMessage = (customMessage) => {
+    if (customMessage.action === 'add_to_cart') {
+      const product = products.find(p => p.id == customMessage.product_id);
+      if (product) {
+        dispatch({ type: 'ADD_TO_CART', payload: product });
+        setSnackbarOpen(true);
+      }
     }
   };
 
@@ -53,6 +82,13 @@ const Chatbot = ({ isOpen, onClose }) => {
     if (event.key === 'Enter') {
       handleSend();
     }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   return isOpen ? (
@@ -110,6 +146,20 @@ const Chatbot = ({ isOpen, onClose }) => {
           <SendIcon />
         </Button>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Product added to cart!
+        </Alert>
+      </Snackbar>
     </Box>
   ) : null;
 };
