@@ -4,18 +4,18 @@ import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
 import Cart from './components/Cart';
 import Login from './components/Login';
-import Register from './components/Register'; 
-import UserProfile from './components/UserProfile'; 
+import Register from './components/Register';
+import UserProfile from './components/UserProfile';
 import PrivateRoute from './components/PrivateRoute';
 import Chatbot from './components/Chatbot';
-import FloatingButton from './components/FloatingButton';
-import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Fab } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import ChatIcon from '@mui/icons-material/Chat';
 import { AuthContext } from './context/AuthContext';
 import './App.css';
 
@@ -75,7 +75,7 @@ function App() {
                 <ListItemText primary="Login" />
               </ListItem>
               <ListItem button component={Link} to="/register" onClick={toggleDrawer}>
-                <ListItemIcon><LoginIcon /></ListItemIcon> 
+                <ListItemIcon><LoginIcon /></ListItemIcon>
                 <ListItemText primary="Register" />
               </ListItem>
             </>
@@ -100,7 +100,16 @@ function App() {
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </Container>
-      <FloatingButton onClick={toggleChatbot} />
+      {!isChatbotOpen && (
+        <Fab
+          color="primary"
+          aria-label="chat"
+          onClick={toggleChatbot}
+          sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        >
+          <ChatIcon />
+        </Fab>
+      )}
       <Chatbot isOpen={isChatbotOpen} onClose={toggleChatbot} />
     </div>
   );

@@ -1,57 +1,117 @@
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
-import '../styles/Chatbot.css';
-
-const socket = io('http://localhost:5005'); // Ensure this is the correct port
+import { Box, Button, TextField, Typography, Paper, IconButton } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
 
 const Chatbot = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
 
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to Rasa server');
-    });
+    if (isOpen) {
+      setMessages([]);
+      sendMessage('Hello'); // Send initial greeting message when the chatbot opens
+    }
+  }, [isOpen]);
 
-    socket.on('bot_uttered', (response) => {
-      setMessages((messages) => [...messages, { text: response.text, user: 'bot' }]);
-    });
+  const sendMessage = async (message) => {
+    if (!message) return;
 
-    return () => {
-      socket.off('bot_uttered');
-      socket.off('connect');
-    };
-  }, []);
+    const userMessage = { sender: 'user', message: message };
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-  const sendMessage = () => {
-    socket.emit('user_uttered', { message: input });
-    setMessages((messages) => [...messages, { text: input, user: 'user' }]);
-    setInput('');
+    try {
+      const response = await axios.post('http://localhost:5005/webhooks/rest/webhook', {
+        sender: 'user',
+        message: message,
+      });
+
+      const botMessages = response.data.map((msg) => ({
+        sender: 'bot',
+        message: msg.text,
+      }));
+
+      setMessages((prevMessages) => [...prevMessages, ...botMessages]);
+    } catch (error) {
+      console.error('Error communicating with Rasa:', error);
+    }
   };
 
-  if (!isOpen) return null;
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
+  };
 
-  return (
-    <div className="chatbot-container">
-      <div className="chatbot-header">
-        <h3>Chatbot</h3>
-        <button onClick={onClose} className="close-button">X</button>
-      </div>
-      <div className="messages">
+  const handleSend = () => {
+    if (input.trim()) {
+      sendMessage(input);
+      setInput('');
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSend();
+    }
+  };
+
+  return isOpen ? (
+    <Box
+      sx={{
+        position: 'fixed',
+        bottom: 16,
+        right: 16,
+        width: '300px',
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 2,
+        borderRadius: 1,
+        zIndex: 1000,
+      }}
+    >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+        <Typography variant="h6">Chatbot</Typography>
+        <IconButton onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      <Paper sx={{ p: 2, height: '300px', overflowY: 'auto', mb: 1 }}>
         {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.user}`}>
-            {msg.text}
-          </div>
+          <Typography
+            key={index}
+            sx={{
+              textAlign: msg.sender === 'user' ? 'right' : 'left',
+              bgcolor: msg.sender === 'user' ? 'primary.light' : 'secondary.light',
+              color: msg.sender === 'user' ? 'white' : 'black',
+              p: 1,
+              borderRadius: 1,
+              mb: 1,
+            }}
+          >
+            {msg.message}
+          </Typography>
         ))}
-      </div>
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-      />
-      <button onClick={sendMessage}>Send</button>
-    </div>
-  );
+      </Paper>
+      <Box sx={{ display: 'flex' }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          value={input}
+          onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
+          placeholder="Type a message..."
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSend}
+          sx={{ ml: 1, minWidth: 'fit-content' }}
+        >
+          <SendIcon />
+        </Button>
+      </Box>
+    </Box>
+  ) : null;
 };
 
 export default Chatbot;
