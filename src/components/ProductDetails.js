@@ -143,6 +143,12 @@ function ProductDetails() {
         <Typography variant="body1" paragraph>
           {product.description}
         </Typography>
+        <Typography variant="body1" paragraph>
+          Manufacturer: {product.manufacturer}
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Production Year: {product.productionYear}
+        </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2, pb: 4 }}>
           <Button
             variant="contained"
@@ -159,7 +165,7 @@ function ProductDetails() {
               onClick={() => setReviewModalOpen(true)}
               sx={{ width: '200px', mr: 2 }}
             >
-              Review this product
+              Review
             </Button>
           )}
           <Button
