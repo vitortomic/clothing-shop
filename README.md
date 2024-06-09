@@ -2,7 +2,7 @@ Requirements to run this app:
 
 node, python version compatible with Rasa AI (3.8 , 3.9 and 3.10)
 
-Install and setup Rasa AI and then replace the files included in the rasa_training folder over the files of the same name
+Install and setup Rasa AI (https://rasa.com/docs/rasa/2.x/installation/) and then replace the files included in the rasa_training folder over the files of the same name
 in the rasa directory.
 
 Then run:
