@@ -10,11 +10,11 @@ function Login() {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const username = event.target.elements.username.value;
     const password = event.target.elements.password.value;
-    const result = login(username, password);
+    const result = await login(username, password);
     if (result.success) {
       navigate(from, { replace: true });
     } else {
