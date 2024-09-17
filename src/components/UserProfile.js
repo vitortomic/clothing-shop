@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
+import axios from 'axios';
+import { Container, TextField, Button, Typography, Box, Alert, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
@@ -15,6 +16,7 @@ const UserProfile = () => {
     address: '',
   });
   const [message, setMessage] = useState('');
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,10 +25,27 @@ const UserProfile = () => {
         ...user,
         confirmPassword: user.password,
       });
+      fetchUsers();
     } else {
       navigate('/login');
     }
   }, [user, navigate]);
+
+  const fetchUsers = async () => {
+    try {
+      const token = user?.token;
+      const response = await axios.get('http://localhost:3001/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      setMessage('Failed to load users');
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -137,6 +156,29 @@ const UserProfile = () => {
             </Button>
           </Box>
         </form>
+
+        {/* User List Table */}
+        <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+          Users List
+        </Typography>
+        <Paper sx={{ mt: 2 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Username</TableCell>
+                <TableCell>Email</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow key={user.username}>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
       </Box>
     </Container>
   );

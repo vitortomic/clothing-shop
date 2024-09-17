@@ -1,54 +1,71 @@
 import React, { createContext, useState } from 'react';
+import axios from 'axios';
 
-// Create the context
 const AuthContext = createContext();
 
-// AuthProvider component to provide the auth state to the component tree
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    // Retrieve user data from sessionStorage if available
     const storedUser = sessionStorage.getItem('currentUser');
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  // Function to handle login
-  const login = (username, password) => {
-    const storedUser = sessionStorage.getItem(username);
-    if (storedUser) {
-      const userObject = JSON.parse(storedUser);
-      if (userObject.password === password) {
+  const API_URL = 'http://localhost:3001';
+
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post(`${API_URL}/login`, { username, password });
+      
+      if (response.data && response.data.token) {
+        const userObject = { username, token: response.data.token };
         setUser(userObject);
         sessionStorage.setItem('currentUser', JSON.stringify(userObject));
         return { success: true };
       } else {
-        return { success: false, message: 'Incorrect password' };
+        return { success: false, message: 'Login failed' };
       }
-    } else {
-      return { success: false, message: 'User not found' };
+    } catch (error) {
+      return { success: false, message: error.response ? error.response.data.message : 'Error logging in' };
     }
   };
 
-  // Function to handle registration
-  const register = (userData) => {
-    const { username } = userData;
-    if (sessionStorage.getItem(username)) {
-      return { success: false, message: 'Username already taken' };
-    } else {
-      sessionStorage.setItem(username, JSON.stringify(userData));
-      return { success: true };
+  const register = async (userData) => {
+    try {
+      const response = await axios.post(`${API_URL}/register`, userData);
+
+      if (response.data && response.data.message === 'User registered successfully') {
+        return { success: true };
+      } else {
+        return { success: false, message: response.data.message };
+      }
+    } catch (error) {
+      return { success: false, message: error.response ? error.response.data.message : 'Error registering' };
     }
   };
 
-  // Function to handle updating user profile
-  const updateUser = (updatedUser) => {
-    sessionStorage.setItem(updatedUser.username, JSON.stringify(updatedUser));
-    setUser(updatedUser);
+  const updateUser = async (updatedUser) => {
+    try {
+      const token = user?.token;
+      const response = await axios.put(
+        `${API_URL}/update-profile`,
+        updatedUser,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.data) {
+        setUser(updatedUser);
+        sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+        return { success: true };
+      } else {
+        return { success: false, message: 'Failed to update user' };
+      }
+    } catch (error) {
+      return { success: false, message: error.response ? error.response.data.message : 'Error updating profile' };
+    }
   };
 
-  // Function to handle logout
   const logout = () => {
     setUser(null);
-    sessionStorage.removeItem('currentUser'); // Remove user from sessionStorage
+    sessionStorage.removeItem('currentUser');
   };
 
   return (
